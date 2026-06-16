@@ -1,0 +1,324 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:transparent;}
+.er-wrap{
+  background: linear-gradient(160deg,#2a1a06 0%,#3d2408 40%,#2a1a06 100%);
+  border-radius:16px;
+  padding:0;
+  overflow:hidden;
+  border:3px solid #8B5E1A;
+  box-shadow:0 0 0 1px #5a3a0a;
+  font-family:'Crimson Text',Georgia,serif;
+  position:relative;
+}
+.wood-texture{
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,0,0,0.04) 40px,rgba(0,0,0,0.04) 41px),
+    repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(255,200,80,0.03) 30px,rgba(255,200,80,0.03) 31px);
+  pointer-events:none;z-index:0;
+}
+.er-header{
+  background:linear-gradient(180deg,#1a0d02 0%,#2d1606 100%);
+  padding:1.2rem 1.5rem 1rem;
+  text-align:center;
+  border-bottom:2px solid #8B5E1A;
+  position:relative;z-index:1;
+}
+.er-eyebrow{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:3px;
+  color:#c8862a;text-transform:uppercase;margin-bottom:4px;
+}
+.er-title{
+  font-family:'Cinzel',serif;
+  font-size:20px;font-weight:700;
+  color:#f5c842;
+  text-shadow:0 0 20px rgba(245,200,66,0.4),2px 2px 0 #7a4800;
+  line-height:1.2;
+}
+.er-subtitle{font-size:13px;color:#c8a060;margin-top:4px;font-style:italic;}
+.lock-bar{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px 1.5rem;
+  background:rgba(0,0,0,0.3);
+  border-bottom:1px solid rgba(139,94,26,0.4);
+  position:relative;z-index:1;
+}
+.lock-icon{font-size:18px;transition:filter 0.4s;}
+.lock-icon.open{filter:brightness(1.8) sepia(1) saturate(3);}
+.lock-divider{width:24px;height:2px;background:rgba(139,94,26,0.5);border-radius:1px;}
+.progress-label{font-size:12px;color:#c8a060;margin-left:8px;font-family:'Cinzel',serif;}
+.er-body{padding:1.25rem 1.5rem;position:relative;z-index:1;}
+.parchment{
+  background:linear-gradient(135deg,#f0d99a 0%,#e8c87a 30%,#f5dfa0 60%,#ddb96a 100%);
+  border-radius:10px;
+  border:2px solid #8B6914;
+  padding:1.25rem;
+  position:relative;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.2),0 4px 16px rgba(0,0,0,0.5);
+}
+.parchment::before{
+  content:'';position:absolute;inset:4px;
+  border:1px dashed rgba(100,60,0,0.3);
+  border-radius:6px;pointer-events:none;
+}
+.mission-tag{
+  display:inline-block;
+  background:#8B1A1A;color:#f5c842;
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;
+  padding:3px 10px;border-radius:4px;
+  margin-bottom:10px;
+  border:1px solid #c8862a;
+}
+.q-num{font-size:12px;color:#5a3a00;font-style:italic;margin-bottom:6px;}
+.q-text{
+  font-size:17px;font-weight:600;color:#2a1400;
+  line-height:1.4;margin-bottom:1rem;
+}
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt-btn{
+  background:rgba(255,255,255,0.35);
+  border:1.5px solid #8B6914;
+  border-radius:8px;padding:10px 14px;
+  text-align:left;font-size:15px;
+  color:#2a1400;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  font-family:'Crimson Text',serif;
+  transition:background 0.15s,border-color 0.15s,transform 0.1s;
+}
+.opt-btn:hover:not(:disabled){
+  background:rgba(245,200,66,0.35);
+  border-color:#c8862a;transform:translateX(4px);
+}
+.opt-btn.correct{background:rgba(34,120,40,0.25);border-color:#1a6a1e;color:#0a3a0d;}
+.opt-btn.wrong{background:rgba(180,30,30,0.2);border-color:#8B1A1A;color:#5a0000;}
+.opt-btn:disabled{cursor:default;transform:none;}
+.opt-letter{
+  font-family:'Cinzel',serif;font-weight:700;font-size:13px;
+  min-width:22px;color:#7a4800;
+}
+.feedback-box{
+  margin-top:12px;border-radius:8px;padding:10px 14px;
+  font-size:14px;display:none;line-height:1.5;
+}
+.feedback-box.show{display:block;}
+.feedback-box.correct{background:rgba(34,120,40,0.15);border:1px solid #1a6a1e;color:#0a3a0d;}
+.feedback-box.wrong{background:rgba(180,30,30,0.12);border:1px solid #8B1A1A;color:#5a0000;}
+.nav-row{display:flex;justify-content:flex-end;margin-top:14px;}
+.next-btn{
+  display:none;
+  background:linear-gradient(135deg,#c8862a,#f5c842,#c8862a);
+  border:none;border-radius:8px;
+  padding:10px 22px;
+  font-family:'Cinzel',serif;font-size:13px;font-weight:700;
+  color:#2a1400;cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,0.4);
+  transition:transform 0.1s,box-shadow 0.1s;
+}
+.next-btn.show{display:inline-block;}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,0.5);}
+.next-btn:active{transform:translateY(0);}
+.score-wrap{
+  display:none;padding:1.25rem 1.5rem;position:relative;z-index:1;
+}
+.score-parchment{
+  background:linear-gradient(135deg,#f0d99a,#e8c87a,#f5dfa0,#ddb96a);
+  border-radius:10px;border:2px solid #8B6914;
+  padding:1.5rem;text-align:center;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.2),0 4px 16px rgba(0,0,0,0.5);
+}
+.score-chest{font-size:52px;margin-bottom:8px;}
+.score-big{
+  font-family:'Cinzel',serif;font-size:42px;font-weight:700;
+  color:#8B1A1A;
+  text-shadow:2px 2px 0 #c8862a;margin-bottom:4px;
+}
+.score-fraction{font-size:18px;color:#5a3a00;margin-bottom:8px;font-family:'Cinzel',serif;}
+.score-msg{font-size:16px;color:#2a1400;font-weight:600;margin-bottom:4px;}
+.score-sub{font-size:13px;color:#5a3a00;font-style:italic;margin-bottom:1.25rem;}
+.retry-btn{
+  background:linear-gradient(135deg,#8B1A1A,#b02020,#8B1A1A);
+  border:2px solid #c8862a;border-radius:8px;
+  padding:10px 24px;
+  font-family:'Cinzel',serif;font-size:13px;font-weight:700;
+  color:#f5c842;cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,0.4);
+  transition:transform 0.1s;
+}
+.retry-btn:hover{transform:translateY(-2px);}
+.x-mark{color:#8B1A1A;font-size:16px;}
+.check-mark{color:#1a6a1e;font-size:16px;}
+</style>
+
+<div class="er-wrap">
+  <div class="wood-texture"></div>
+
+  <div class="er-header">
+    <div class="er-eyebrow">Escape Room Educativo</div>
+    <div class="er-title">¡Explorando el Plano Cartesiano!</div>
+    <div class="er-subtitle">Una aventura matemática interactiva · Profe Yarisbel · 1er Grado Secundaria</div>
+  </div>
+
+  <div class="lock-bar">
+    <span style="font-size:11px;color:#c8a060;font-family:'Cinzel',serif;letter-spacing:1px;">MISIONES:</span>
+    <div id="locks" style="display:flex;align-items:center;gap:5px;margin-left:6px;"></div>
+    <span class="progress-label" id="prog-label">1 / 5</span>
+  </div>
+
+  <div class="er-body" id="q-body">
+    <div class="parchment">
+      <div class="mission-tag">🗺 MISIÓN</div>
+      <div class="q-num" id="q-num">Pregunta 1 de 5</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="opts"></div>
+      <div class="feedback-box" id="feedback"></div>
+    </div>
+    <div class="nav-row">
+      <button class="next-btn" id="next-btn" onclick="nextQ()"></button>
+    </div>
+  </div>
+
+  <div class="score-wrap" id="score-wrap">
+    <div class="score-parchment">
+      <div class="score-chest" id="score-chest">🔒</div>
+      <div class="score-big" id="score-big">0</div>
+      <div class="score-fraction" id="score-frac">de 5 misiones</div>
+      <div class="score-msg" id="score-msg"></div>
+      <div class="score-sub" id="score-sub"></div>
+      <button class="retry-btn" onclick="restart()">🔄 Nueva aventura</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const qs = [
+  {
+    t:"¿Cómo se llama el punto donde se cruzan los dos ejes?",
+    opts:["Par ordenado","Origen (0, 0)","Cuadrante"],
+    c:1,
+    ok:"¡Misión cumplida! El punto donde se cruzan el eje X y el eje Y se llama Origen y sus coordenadas son (0, 0).",
+    fail:"El punto donde se cruzan ambos ejes se llama Origen con coordenadas (0, 0). ¡Sigue explorando!"
+  },
+  {
+    t:"¿En qué cuadrante está el punto (−4, 3)?",
+    opts:["Cuadrante I","Cuadrante III","Cuadrante II"],
+    c:2,
+    ok:"¡Correcto, explorador! x negativa + y positiva = Cuadrante II (izquierda, arriba). ¡Clave descifrada!",
+    fail:"Pista: x negativa e y positiva nos ubican en el Cuadrante II (lado izquierdo, arriba). ¡Intenta la próxima!"
+  },
+  {
+    t:"El par ordenado (x, y): ¿qué indica el primer número?",
+    opts:["El movimiento en el eje Y","El movimiento en el eje X","El cuadrante"],
+    c:1,
+    ok:"¡Excelente! En (x, y) el primer número siempre es el desplazamiento horizontal sobre el eje X. ¡Eres un detective matemático!",
+    fail:"Recuerda: en (x, y) el primer número indica el movimiento en el eje X (horizontal). ¡Adelante!"
+  },
+  {
+    t:"¿Cuántos cuadrantes tiene el plano cartesiano?",
+    opts:["2","3","4"],
+    c:2,
+    ok:"¡Perfecto! Los dos ejes dividen el plano en exactamente 4 cuadrantes: I, II, III y IV. ¡Código desbloqueado!",
+    fail:"Los dos ejes dividen el plano en 4 cuadrantes (I, II, III y IV). ¡Puedes con la siguiente!"
+  },
+  {
+    t:"¿En qué cuadrante están los puntos donde ambas coordenadas son negativas?",
+    opts:["Cuadrante I","Cuadrante III","Cuadrante IV"],
+    c:1,
+    ok:"¡MISIÓN FINAL SUPERADA! Cuando x < 0 e y < 0, el punto vive en el Cuadrante III (izquierda, abajo). ¡El cofre es tuyo! 🏆",
+    fail:"Cuando ambas son negativas (x < 0, y < 0) el punto está en el Cuadrante III, abajo a la izquierda. ¡Casi lo tienes!"
+  }
+];
+
+let cur=0, score=0, answered=false;
+const letters=['a','b','c'];
+
+function buildLocks(){
+  const div=document.getElementById('locks');
+  div.innerHTML='';
+  for(let i=0;i<qs.length;i++){
+    if(i>0){const d=document.createElement('div');d.className='lock-divider';div.appendChild(d);}
+    const s=document.createElement('span');
+    s.className='lock-icon';s.id='lock-'+i;
+    s.textContent='🔒';div.appendChild(s);
+  }
+}
+
+function renderQ(){
+  const q=qs[cur];
+  document.getElementById('q-num').textContent='Pregunta '+(cur+1)+' de '+qs.length;
+  document.getElementById('prog-label').textContent=(cur+1)+' / '+qs.length;
+  document.getElementById('q-text').textContent=q.t;
+  const opts=document.getElementById('opts');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';b.id='opt-'+i;
+    b.onclick=()=>pick(i);
+    b.innerHTML=`<span class="opt-letter">${letters[i]})</span><span>${o}</span>`;
+    opts.appendChild(b);
+  });
+  const fb=document.getElementById('feedback');
+  fb.className='feedback-box';fb.textContent='';
+  const nb=document.getElementById('next-btn');
+  nb.className='next-btn';
+  answered=false;
+}
+
+function pick(idx){
+  if(answered)return;
+  answered=true;
+  const q=qs[cur];
+  const right=idx===q.c;
+  if(right)score++;
+  document.querySelectorAll('.opt-btn').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.c)b.classList.add('correct');
+    else if(i===idx)b.classList.add('wrong');
+  });
+  const fb=document.getElementById('feedback');
+  fb.textContent=(right?'✅ ':' ❌ ')+(right?q.ok:q.fail);
+  fb.className='feedback-box show '+(right?'correct':'wrong');
+  const nb=document.getElementById('next-btn');
+  nb.textContent=cur<qs.length-1?'Siguiente misión →':'Ver mi resultado →';
+  nb.className='next-btn show';
+  if(right){
+    const lock=document.getElementById('lock-'+cur);
+    if(lock){lock.textContent='🔓';lock.classList.add('open');}
+  }
+}
+
+function nextQ(){
+  cur++;
+  if(cur>=qs.length){showScore();return;}
+  renderQ();
+}
+
+function showScore(){
+  document.getElementById('q-body').style.display='none';
+  document.getElementById('score-wrap').style.display='block';
+  document.querySelector('.lock-bar').style.display='none';
+  const pct=Math.round(score/qs.length*100);
+  let chest='🔒',msg='',sub='';
+  if(pct===100){chest='🏆';msg='¡AVENTURERO LEGENDARIO!';sub='¡Dominas el plano cartesiano! El cofre del tesoro es tuyo.';}
+  else if(pct>=80){chest='🎉';msg='¡GRAN EXPLORADOR!';sub='Casi perfecto. Repasa una pista y lo lograrás.';}
+  else if(pct>=60){chest='⚔️';msg='¡BUEN DETECTIVE!';sub='Vas por buen camino. ¡Sigue entrenando!';}
+  else{chest='🗺️';msg='¡EXPLORADOR EN FORMACIÓN!';sub='El tesoro te espera. ¡Estudia el mapa y vuelve!';}
+  document.getElementById('score-chest').textContent=chest;
+  document.getElementById('score-big').textContent=score+'/'+qs.length;
+  document.getElementById('score-frac').textContent='misiones completadas ('+pct+'%)';
+  document.getElementById('score-msg').textContent=msg;
+  document.getElementById('score-sub').textContent=sub;
+}
+
+function restart(){
+  cur=0;score=0;answered=false;
+  document.getElementById('q-body').style.display='block';
+  document.getElementById('score-wrap').style.display='none';
+  document.querySelector('.lock-bar').style.display='flex';
+  buildLocks();renderQ();
+}
+
+buildLocks();renderQ();
+</script>
